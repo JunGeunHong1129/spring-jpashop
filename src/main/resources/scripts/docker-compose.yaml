@@ -1,0 +1,30 @@
+version: "3"
+services:
+  # 도커 네트워크 : 컨테이너 네트워크
+  postgresql:
+    image: gjhong1129/examples:jpashop_db_v0.0.1
+    container_name: jpashop_db_v0.0.1
+    hostname: postgresql
+    restart: always
+    platform: linux/amd64
+    user: root
+    networks:
+      - chat_server_network
+    expose:
+      - "26000"
+    ports:
+      - "33333:26000"
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PWD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+    command: postgres -p 26000 -c hba_file=/etc/postgresql/pg_hba.conf -c
+      config_file=/etc/postgresql/postgresql.conf
+    volumes:
+      - ./volume/postgresql/run:/var/run/postgresql/run
+      - ./volume/postgresql/data/:/var/lib/postgresql/data
+      # - /usr/bin/qemu-arm-static:/usr/bin/qemu-arm-static
+
+networks:
+  chat_server_network:
+    driver: bridge
