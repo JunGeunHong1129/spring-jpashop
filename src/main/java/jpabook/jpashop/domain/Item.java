@@ -25,7 +25,7 @@ public class Item {
 
     private int stockQuantity;
 
-    @OneToMany(mappedBy = "item")
-    private List<Item> categories = new ArrayList<>();
+    @ManyToMany(mappedBy = "items")
+    private List<Category> categories = new ArrayList<>();
 
 }

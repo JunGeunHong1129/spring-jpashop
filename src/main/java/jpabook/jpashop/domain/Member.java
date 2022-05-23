@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.apache.tomcat.jni.Address;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,8 +23,9 @@ public class Member {
     @Embedded
     private Address address;
 
-    @OneToMany(mappedBy = "order")
-    private List<Order> orderList;
+    @OneToMany(mappedBy = "member")
+    private List<Order> orders = new ArrayList<>();
+
 
 
 }
