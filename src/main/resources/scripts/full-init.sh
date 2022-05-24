@@ -8,7 +8,7 @@ echo "Chat-Server Volume Set Complete"
 
 docker-compose config
 
-docker-compose down
+docker-compose down --remove-orphans
 
 docker-compose up
 
