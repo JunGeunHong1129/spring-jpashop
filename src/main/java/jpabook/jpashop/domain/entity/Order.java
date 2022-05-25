@@ -93,7 +93,7 @@ public class Order {
      *  orderItems의 각 getOrderPrice를 sum한 결과
      */
     public int getTotalPrice(){
-        return orderItems.stream().mapToInt(OrderItem::getOrderPrice).sum();
+        return orderItems.stream().mapToInt(OrderItem::getTotalPrice).sum();
     }
 
 }

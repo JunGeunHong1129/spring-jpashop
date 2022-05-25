@@ -56,7 +56,7 @@ public class OrderItem {
      * @return int
      *  getOrderPrice() * getCount() 결과값이 리턴된다.
      */
-    public int getOrderPrice(){
+    public int getTotalPrice(){
         return getOrderPrice() * getCount();
     }
 
