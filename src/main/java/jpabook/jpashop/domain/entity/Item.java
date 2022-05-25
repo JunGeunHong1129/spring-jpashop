@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @Table(name = "item")
 @DiscriminatorColumn(name = "dtype")
-public class Item {
+public abstract class Item {
 
     @Id
     @GeneratedValue
