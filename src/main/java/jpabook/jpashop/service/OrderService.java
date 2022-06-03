@@ -1,5 +1,6 @@
 package jpabook.jpashop.service;
 
+import jpabook.jpashop.domain.dto.OrderSearchDTO;
 import jpabook.jpashop.domain.entity.*;
 import jpabook.jpashop.repository.ItemRepository;
 import jpabook.jpashop.repository.MemberRepository;
@@ -25,7 +26,15 @@ public class OrderService {
      * @param memberId
      * @param itemId
      * @param count
-     *      생성 메서드를 통해 생성한 주문 객체
+     *      생성 메서드를 통해 생성한 주문 객체이다.
+     *
+     *      엔티티를 각각 넘기는 방식이 아닌 이유는
+     *      이 메서드에 트랜잭션이 걸려있기 때문에
+     *      밖에서 엔티티를 만들어 넘겨봐야 아무 의미도 없고
+     *      영속성 컨텍스트와 연관도 없다.
+     *      여기에서 id를 각각 넘겨받아 조회한 영속화된 객체를
+     *      트랜잭션이 있는 이 서비스 계층에서 사용할 수 있기 때문이다.
+     *      즉, 여기서 조회해서 사용해야 JPA를 사용하는 것이다.
      * @return Long
      *      생성한 Order의 Id
      */
@@ -72,9 +81,8 @@ public class OrderService {
         order.cancel();
     }
 
-    // 검색
-//    public List<Order> findOrderList(OrderSearch orderSearch){
-//            return orderRepository.findOrderByOrderSearchDTO();
-//    }
+    public List<Order> findOrderList(OrderSearchDTO orderSearch){
+            return orderRepository.findAllByString(orderSearch);
+    }
 
 }
