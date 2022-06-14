@@ -2,14 +2,17 @@ package jpabook.jpashop.domain.order.dto;
 
 
 import jpabook.jpashop.domain.order.vo.OrderStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@RequiredArgsConstructor
+@Setter
+//@RequiredArgsConstructor
 public class OrderSearchDTO {
 
-    private final String memberName;
-    private final OrderStatus orderStatus;
+    private String memberName;
+    private OrderStatus orderStatus;
 
 }
