@@ -1,7 +1,6 @@
 package jpabook.jpashop.member.presentation;
 
 import jpabook.jpashop.common.dto.Result;
-import jpabook.jpashop.domain.member.dto.*;
 import jpabook.jpashop.member.entity.Member;
 import jpabook.jpashop.member.service.MemberService;
 
