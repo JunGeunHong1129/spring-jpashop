@@ -1,5 +1,6 @@
 package jpabook.jpashop.delivery.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jpabook.jpashop.common.vo.Address;
 import jpabook.jpashop.delivery.vo.DeliveryStatus;
 import jpabook.jpashop.order.command.domain.entity.Order;
@@ -16,6 +17,7 @@ public class Delivery {
     @Column(name = "delivery_id")
     private Long id;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "delivery",fetch = FetchType.LAZY)
     private Order order;
 
