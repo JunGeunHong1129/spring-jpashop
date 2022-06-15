@@ -1,13 +1,13 @@
 package jpabook.jpashop.domain.order.presentation;
 
 
-import jpabook.jpashop.domain.order.dto.OrderSearchDTO;
+import jpabook.jpashop.domain.order.command.domain.dto.OrderSearchDTO;
 import jpabook.jpashop.domain.item.entity.Item;
 import jpabook.jpashop.domain.member.entity.Member;
-import jpabook.jpashop.domain.order.entity.Order;
+import jpabook.jpashop.domain.order.command.domain.entity.Order;
 import jpabook.jpashop.domain.item.service.ItemService;
 import jpabook.jpashop.domain.member.service.MemberService;
-import jpabook.jpashop.domain.order.service.OrderService;
+import jpabook.jpashop.domain.order.command.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

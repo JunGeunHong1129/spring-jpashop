@@ -1,7 +1,7 @@
 package jpabook.jpashop.domain.member.entity;
 
 import jpabook.jpashop.common.vo.Address;
-import jpabook.jpashop.domain.order.entity.Order;
+import jpabook.jpashop.domain.order.command.domain.entity.Order;
 import lombok.Getter;
 import lombok.Setter;
 

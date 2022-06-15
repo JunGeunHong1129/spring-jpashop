@@ -2,7 +2,7 @@ package jpabook.jpashop.domain.delivery.entity;
 
 import jpabook.jpashop.common.vo.Address;
 import jpabook.jpashop.domain.delivery.vo.DeliveryStatus;
-import jpabook.jpashop.domain.order.entity.Order;
+import jpabook.jpashop.domain.order.command.domain.entity.Order;
 import lombok.Getter;
 import lombok.Setter;
 
