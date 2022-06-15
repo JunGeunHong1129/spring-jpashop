@@ -1,7 +1,8 @@
-package jpabook.jpashop.domain.order.repository;
+package jpabook.jpashop.domain.order.command.domain.repository;
 
-import jpabook.jpashop.domain.order.dto.OrderSearchDTO;
-import jpabook.jpashop.domain.order.entity.Order;
+import jpabook.jpashop.domain.order.command.domain.dto.OrderSearchDTO;
+import jpabook.jpashop.domain.order.query.domain.dto.SimpleOrderDTO;
+import jpabook.jpashop.domain.order.command.domain.entity.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -97,7 +98,7 @@ public class OrderRepository {
         TypedQuery<Order> query = em.createQuery(cq).setMaxResults(1000);
         return query.getResultList();
     }
-
+    // 엔티티 자체를 fetch join으로 들고온다.
     public List<Order> findAllWithMemberDelivery(){
         return em.createQuery("select o from Order o " +
                 "join fetch o.member m " +

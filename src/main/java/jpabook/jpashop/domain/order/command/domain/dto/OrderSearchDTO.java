@@ -1,4 +1,4 @@
-package jpabook.jpashop.domain.order.dto;
+package jpabook.jpashop.domain.order.command.domain.dto;
 
 
 import jpabook.jpashop.domain.order.vo.OrderStatus;
