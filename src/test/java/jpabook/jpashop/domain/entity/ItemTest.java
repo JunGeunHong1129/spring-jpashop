@@ -1,6 +1,6 @@
 package jpabook.jpashop.domain.entity;
 
-import jpabook.jpashop.domain.item.entity.Book;
+import jpabook.jpashop.item.entity.Book;
 import jpabook.jpashop.common.exception.NotEnoughStockException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

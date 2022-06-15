@@ -2,11 +2,11 @@ package jpabook.jpashop.config;
 
 
 import jpabook.jpashop.common.vo.Address;
-import jpabook.jpashop.domain.delivery.entity.Delivery;
-import jpabook.jpashop.domain.item.entity.Book;
-import jpabook.jpashop.domain.member.entity.Member;
-import jpabook.jpashop.domain.order.command.domain.entity.Order;
-import jpabook.jpashop.domain.order.command.domain.entity.OrderItem;
+import jpabook.jpashop.delivery.entity.Delivery;
+import jpabook.jpashop.item.entity.Book;
+import jpabook.jpashop.member.entity.Member;
+import jpabook.jpashop.order.command.domain.entity.Order;
+import jpabook.jpashop.order.command.domain.entity.OrderItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
