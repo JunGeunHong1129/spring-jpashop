@@ -104,4 +104,32 @@ public class OrderRepository {
                 "join fetch o.delivery d", Order.class).getResultList();
     }
 
+    /**
+     * OneToMany 컬렉션을 가져와야하는 조회이다.
+     *     이때 무조건 데이터 뻥튀기를 조심해야한다.
+     *     그렇기 때문에 이 OneToMany를 join해서 들고올땐 항상 distinct로 중복 컬럼을 제거해줘야한다.
+     *     근데 기본적으로 디비에선 distinct는 모든 컬럼이 일치해야 제거해준다.
+     *     jpa에서 자체적으로 같은 아이디값인 Order를 날려주는 것이다.
+     *
+     *     주의 할점 !!!
+     *
+     *     컬렉션 패치 조인은 뻥튀기된 결과가 디비에 나오기 때문에
+     *     jpa에 페이징 조건 쿼리를 추가하면 정확한 연산결과를
+     *     뻥튀기된 결과를 들고 있는 디비단에서 알지 못해
+     *     디비에 들어가는 쿼리단에 페이징 조건 쿼리가 들어가지 않는다!!!!!
+     *     이때 jpa가 페이징을 온메모리에서 sorting해서 ordering을 해버리기 때문에
+     *     쿼리 결과가 100000개이고 이 페이징을 처리하는 요청이 1000개이면
+     *     요청이 들어오는 순간 Out Of Memory가 발생해버리기 십상이다.
+     *
+     * @return List<Order>
+     */
+
+    public List<Order> findAllWithItem(){
+        return em.createQuery("select distinct o from Order o " +
+                "join fetch o.member m " +
+                "join fetch o.delivery d " +
+                "join fetch o.orderItems oi " +
+                "join fetch oi.item i", Order.class).getResultList();
+    }
+
 }

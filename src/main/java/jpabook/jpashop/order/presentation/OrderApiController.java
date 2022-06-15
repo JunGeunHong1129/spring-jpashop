@@ -1,5 +1,6 @@
 package jpabook.jpashop.order.presentation;
 
+import jpabook.jpashop.order.command.domain.dto.OrderDTO;
 import jpabook.jpashop.order.command.domain.dto.OrderSearchDTO;
 import jpabook.jpashop.order.command.domain.entity.Order;
 import jpabook.jpashop.order.command.domain.entity.OrderItem;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.DriverManager;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,6 +40,13 @@ public class OrderApiController {
             }
         }
         return orders;
+    }
+
+    @GetMapping("/api/v3/orders")
+    public List<OrderDTO> ordersV3(){
+        List<Order> orders = orderRepository.findAllWithItem();
+
+        return orders.stream().map(OrderDTO::fromOrder).collect(Collectors.toList());
     }
 
 }
