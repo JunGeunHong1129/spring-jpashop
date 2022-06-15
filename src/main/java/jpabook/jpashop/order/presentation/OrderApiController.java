@@ -9,6 +9,7 @@ import jpabook.jpashop.order.command.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.DriverManager;
@@ -24,7 +25,7 @@ public class OrderApiController {
     private final OrderService orderService;
 
     @GetMapping("/api/v1/orders")
-    public List<Order> ordersV1(){
+    public List<Order> ordersV1() {
         List<Order> orders = orderRepository.findAllByString(new OrderSearchDTO());
         // 엔티티 내부 연관 엔티티 강제 영속화
         // 당연히 N+1이 왕왕 발생중이다.
@@ -43,8 +44,17 @@ public class OrderApiController {
     }
 
     @GetMapping("/api/v3/orders")
-    public List<OrderDTO> ordersV3(){
+    public List<OrderDTO> ordersV3() {
         List<Order> orders = orderRepository.findAllWithItem();
+
+        return orders.stream().map(OrderDTO::fromOrder).collect(Collectors.toList());
+    }
+
+    @GetMapping("/api/v3.1/orders")
+    public List<OrderDTO> ordersV3_page(
+            @RequestParam(value = "offset", defaultValue = "0") int offset,
+            @RequestParam(value = "limit", defaultValue = "100") int limit) {
+        List<Order> orders = orderRepository.findAllWithMemberDeliveryLimit(offset, limit);
 
         return orders.stream().map(OrderDTO::fromOrder).collect(Collectors.toList());
     }

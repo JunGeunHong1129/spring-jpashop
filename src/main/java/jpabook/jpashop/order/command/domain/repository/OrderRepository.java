@@ -132,4 +132,14 @@ public class OrderRepository {
                 "join fetch oi.item i", Order.class).getResultList();
     }
 
+    // 엔티티 자체를 fetch join으로 들고온다.
+    public List<Order> findAllWithMemberDeliveryLimit(int offset, int limit){
+        return em.createQuery("select o from Order o " +
+                "join fetch o.member m " +
+                "join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
 }
