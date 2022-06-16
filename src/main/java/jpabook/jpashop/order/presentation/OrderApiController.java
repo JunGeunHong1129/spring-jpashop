@@ -6,8 +6,9 @@ import jpabook.jpashop.order.command.domain.dto.OrderSearchDTO;
 import jpabook.jpashop.order.command.domain.entity.Order;
 import jpabook.jpashop.order.command.domain.entity.OrderItem;
 import jpabook.jpashop.order.command.domain.repository.OrderRepository;
-import jpabook.jpashop.order.command.service.OrderService;
+import jpabook.jpashop.order.query.domain.dto.OrderItemQueryDTO;
 import jpabook.jpashop.order.query.domain.dto.OrderQueryDTO;
+import jpabook.jpashop.order.query.domain.dto.OrderQueryFlatDTO;
 import jpabook.jpashop.order.query.domain.repository.OrderQueryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.sql.DriverManager;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -68,8 +70,20 @@ public class OrderApiController {
     }
 
     @GetMapping("/api/v5/orders")
-    public Result<List<OrderQueryDTO>> ordersV5_page() {
+    public Result<List<OrderQueryDTO>> ordersV5() {
         return new Result<>(orderQueryRepository.findAllByDTO_optimization());
     }
+
+    @GetMapping("/api/v6/orders")
+    public Result<List<OrderQueryDTO>> ordersV6() {
+        List<OrderQueryFlatDTO> dtoFlat = orderQueryRepository.findAllByDTO_flat();
+
+        List<OrderQueryDTO> collect = dtoFlat.stream().collect(Collectors.groupingBy(OrderQueryDTO::fromOrderQueryFlatDTO,
+                        Collectors.mapping(OrderItemQueryDTO::fromOrderQueryFlatDTO, Collectors.toList())
+                )).entrySet().stream()
+                .map(OrderQueryDTO::fromMapEntry).collect(Collectors.toList());
+        return new Result<>(collect);
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package jpabook.jpashop.order.query.domain.dto;
 
 import jpabook.jpashop.order.command.domain.dto.OrderItemDTO;
+import jpabook.jpashop.order.command.domain.entity.Order;
 import jpabook.jpashop.order.command.domain.entity.OrderItem;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ public class OrderItemQueryDTO {
     private int orderPrice;
     private int count;
 
-    private OrderItemQueryDTO() {
+    protected OrderItemQueryDTO() {
     }
     // 제대로 쓸려면 원래는 아래 로직을 위에 넣는게 맞긴함
     // 그냥 예제니까 안쓴거구
@@ -35,6 +36,14 @@ public class OrderItemQueryDTO {
                 orderItem.getItem().getName(),
                 orderItem.getOrderPrice(),
                 orderItem.getCount()
+        );
+    }
+    public static OrderItemQueryDTO fromOrderQueryFlatDTO(OrderQueryFlatDTO orderItemQueryDTO){
+        return new OrderItemQueryDTO(
+                orderItemQueryDTO.getOrderId(),
+                orderItemQueryDTO.getItemName(),
+                orderItemQueryDTO.getOrderPrice(),
+                orderItemQueryDTO.getCount()
         );
     }
 

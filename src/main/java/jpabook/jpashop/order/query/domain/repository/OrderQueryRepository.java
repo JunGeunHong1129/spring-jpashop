@@ -1,8 +1,10 @@
 package jpabook.jpashop.order.query.domain.repository;
 
+import jpabook.jpashop.order.command.domain.dto.OrderItemDTO;
 import jpabook.jpashop.order.command.domain.entity.OrderItem;
 import jpabook.jpashop.order.query.domain.dto.OrderItemQueryDTO;
 import jpabook.jpashop.order.query.domain.dto.OrderQueryDTO;
+import jpabook.jpashop.order.query.domain.dto.OrderQueryFlatDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -63,5 +65,15 @@ public class OrderQueryRepository {
     private List<Long> toOrderIds(List<OrderQueryDTO> orders) {
         List<Long> orderIdList = orders.stream().map(OrderQueryDTO::getOrderId).collect(Collectors.toList());
         return orderIdList;
+    }
+
+    public List<OrderQueryFlatDTO> findAllByDTO_flat() {
+        return em.createQuery("select new " +
+                "jpabook.jpashop.order.query.domain.dto.OrderQueryFlatDTO(o.id, m.name, o.orderDate, o.orderStatus, d.address, i.name, oi.orderPrice, oi.count)" +
+                "from Order o " +
+                "join o.member m " +
+                "join o.delivery d " +
+                "join o.orderItems oi " +
+                "join oi.item i", OrderQueryFlatDTO.class).getResultList();
     }
 }
