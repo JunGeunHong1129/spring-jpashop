@@ -1,11 +1,14 @@
 package jpabook.jpashop.order.presentation;
 
+import jpabook.jpashop.common.dto.Result;
 import jpabook.jpashop.order.command.domain.dto.OrderDTO;
 import jpabook.jpashop.order.command.domain.dto.OrderSearchDTO;
 import jpabook.jpashop.order.command.domain.entity.Order;
 import jpabook.jpashop.order.command.domain.entity.OrderItem;
 import jpabook.jpashop.order.command.domain.repository.OrderRepository;
 import jpabook.jpashop.order.command.service.OrderService;
+import jpabook.jpashop.order.query.domain.dto.OrderQueryDTO;
+import jpabook.jpashop.order.query.domain.repository.OrderQueryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +25,7 @@ import java.util.stream.Collectors;
 public class OrderApiController {
 
     private final OrderRepository orderRepository;
-    private final OrderService orderService;
+    private final OrderQueryRepository orderQueryRepository;
 
     @GetMapping("/api/v1/orders")
     public List<Order> ordersV1() {
@@ -57,6 +60,11 @@ public class OrderApiController {
         List<Order> orders = orderRepository.findAllWithMemberDeliveryLimit(offset, limit);
 
         return orders.stream().map(OrderDTO::fromOrder).collect(Collectors.toList());
+    }
+
+    @GetMapping("/api/v4/orders")
+    public Result<List<OrderQueryDTO>> ordersV4_page() {
+        return new Result<>(orderQueryRepository.findOrderQueryDTOs());
     }
 
 }
