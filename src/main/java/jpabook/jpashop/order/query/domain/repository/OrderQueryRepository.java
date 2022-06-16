@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -37,4 +39,29 @@ public class OrderQueryRepository {
                 "join o.delivery d", OrderQueryDTO.class).getResultList();
     }
 
+    // default_batch_fetch_size의 설정은 적용되지 않으니 주의해야한다.
+    public List<OrderQueryDTO> findAllByDTO_optimization() {
+        List<OrderQueryDTO> orders = findOrders();
+
+        Map<Long, List<OrderItemQueryDTO>> orderItemMap = findOrderItemsMap(toOrderIds(orders));
+
+        orders.forEach(o -> o.setOrderItems(orderItemMap.get(o.getOrderId())));
+
+        return orders;
+
+    }
+
+    private Map<Long, List<OrderItemQueryDTO>>  findOrderItemsMap(List<Long> orderIdList) {
+        List<OrderItemQueryDTO> orderIds = em.createQuery("select new jpabook.jpashop.order.query.domain.dto.OrderItemQueryDTO(oi.order.id,i.name,oi.orderPrice,oi.count) " +
+                "from OrderItem oi " +
+                "join oi.item i " +
+                "where oi.order.id in :orderIds", OrderItemQueryDTO.class).setParameter("orderIds", orderIdList).getResultList();
+
+        return orderIds.stream().collect(Collectors.groupingBy(OrderItemQueryDTO::getOrderId));
+    }
+
+    private List<Long> toOrderIds(List<OrderQueryDTO> orders) {
+        List<Long> orderIdList = orders.stream().map(OrderQueryDTO::getOrderId).collect(Collectors.toList());
+        return orderIdList;
+    }
 }
