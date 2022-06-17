@@ -1,7 +1,12 @@
 package jpabook.jpashop.order.command.domain.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jpabook.jpashop.member.entity.QMember;
 import jpabook.jpashop.order.command.domain.dto.OrderSearchDTO;
 import jpabook.jpashop.order.command.domain.entity.Order;
+import jpabook.jpashop.order.command.domain.entity.QOrder;
+import jpabook.jpashop.order.vo.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -140,6 +145,33 @@ public class OrderRepository {
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
+    }
+
+    public List<Order> findAll(OrderSearchDTO orderSearchDTO){
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        QOrder qOrder = QOrder.order;
+        QMember qMember = QMember.member;
+
+        return query.select(qOrder)
+                .from(qOrder)
+                .join(qOrder.member, qMember)
+                .where(statusEq(orderSearchDTO.getOrderStatus()), memberNameLike(orderSearchDTO.getMemberName()))
+                .limit(1000)
+                .fetch();
+    }
+
+    private BooleanExpression memberNameLike(String memberName) {
+        if(!StringUtils.hasText(memberName)){
+            return null;
+        }
+        return QMember.member.name.like(memberName);
+    }
+
+    private BooleanExpression statusEq(OrderStatus status){
+        if(status == null){
+            return null;
+        }
+        return QOrder.order.orderStatus.eq(status);
     }
 
 }
